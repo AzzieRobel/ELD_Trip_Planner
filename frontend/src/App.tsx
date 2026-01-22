@@ -1,5 +1,7 @@
 import { useState } from "react";
+
 import MapView from "./components/MapView";
+import ELDLogSheet from "./components/ELDLogSheet";
 
 type TripFormData = {
   current_location: string;
@@ -16,6 +18,17 @@ type RouteResponse = {
   };
 };
 
+type LogSegment = {
+  start: number;
+  end: number;
+  status: "driving" | "on_duty" | "off_duty";
+};
+
+type DailyLog = {
+  day: number;
+  segments: LogSegment[];
+};
+
 function App() {
   const [formData, setFormData] = useState<TripFormData>({
     current_location: "",
@@ -27,6 +40,7 @@ function App() {
   const [route, setRoute] = useState<RouteResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [dailyLogs, setDailyLogs] = useState<DailyLog[]>([]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -43,7 +57,6 @@ function App() {
   const handleSubmit = async () => {
     setLoading(true);
     setError(null);
-    console.log("formData", formData);
 
     try {
       const response = await fetch("http://127.0.0.1:8000/api/plan-trip/", {
@@ -61,6 +74,7 @@ function App() {
 
       const data = await response.json();
       setRoute(data.route);
+      setDailyLogs(data.daily_logs);
     } catch (err: any) {
       setError("Something went wrong. Please try again.");
       console.error(err.message);
@@ -115,6 +129,14 @@ function App() {
       {route && (
         <MapView coordinates={route.geometry.coordinates} />
       )}
+
+      {dailyLogs.map((log) => (
+        <ELDLogSheet
+          key={log.day}
+          day={log.day}
+          segments={log.segments}
+        />
+      ))}
     </div>
   );
 }
