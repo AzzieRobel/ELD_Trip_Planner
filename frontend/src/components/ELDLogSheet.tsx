@@ -26,10 +26,12 @@ function ELDLogSheet({ day, segments }: Props) {
     const hourWidth = 30;
 
     return (
-        <div style={{ marginBottom: "30px" }}>
-            <h3>Day {day}</h3>
+        <div >
+            <h3 className="font-semibold mb-2 text-gray-700">
+                Day {day}
+            </h3>
 
-            <svg width={width} height={140} style={{ border: "1px solid #ccc" }}>
+            <svg width="100%" viewBox="0 0 720 140" height={140} style={{ border: "1px solid #ccc" }}>
                 {/* Hour grid */}
                 {Array.from({ length: 25 }).map((_, i) => (
                     <line

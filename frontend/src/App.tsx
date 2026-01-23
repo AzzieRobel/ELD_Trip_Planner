@@ -84,59 +84,90 @@ function App() {
   };
 
   return (
-    <div style={{ padding: "2rem", maxWidth: "600px" }}>
-      <h1>ELD Trip Planner</h1>
+    <div className="min-h-screen bg-gray-100">
+      <div className="max-w-5xl mx-auto p-6">
+        <div style={{ padding: "2rem" }}>
+          <h1 className="text-3xl font-bold mb-6 text-gray-800">ELD Trip Planner</h1>
+          <p className="text-gray-600 mb-8">
+            Plan routes, stops, and ELD logs for long-haul trips
+          </p>
 
-      <input
-        name="current_location"
-        placeholder="Current Location"
-        value={formData.current_location}
-        onChange={handleChange}
-      />
-      <br /><br />
+          <div className="bg-white p-6 rounded-xl shadow mb-8">
+            <div className="space-y-4">
+              <input
+                className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                name="current_location"
+                placeholder="Current Location"
+                value={formData.current_location}
+                onChange={handleChange}
+              />
 
-      <input
-        name="pickup_location"
-        placeholder="Pickup Location"
-        value={formData.pickup_location}
-        onChange={handleChange}
-      />
-      <br /><br />
+              <input
+                className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                name="pickup_location"
+                placeholder="Pickup Location"
+                value={formData.pickup_location}
+                onChange={handleChange}
+              />
 
-      <input
-        name="dropoff_location"
-        placeholder="Dropoff Location"
-        value={formData.dropoff_location}
-        onChange={handleChange}
-      />
-      <br /><br />
+              <input
+                className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                name="dropoff_location"
+                placeholder="Dropoff Location"
+                value={formData.dropoff_location}
+                onChange={handleChange}
+              />
 
-      <input
-        name="cycle_used_hours"
-        type="number"
-        placeholder="Cycle Used Hours"
-        value={formData.cycle_used_hours}
-        onChange={handleChange}
-      />
-      <br /><br />
+              <input
+                className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                name="cycle_used_hours"
+                type="number"
+                placeholder="Cycle Used Hours"
+                value={formData.cycle_used_hours}
+                onChange={handleChange}
+              />
+              <br /><br />
+            </div>
 
-      <button onClick={handleSubmit} disabled={loading}>
-        {loading ? "Planning..." : "Plan Trip"}
-      </button>
+            <button
+              className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition"
+              onClick={handleSubmit} disabled={loading}>
+              {loading ? "Planning..." : "Plan Trip"}
+            </button>
+          </div>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+          {error && <p style={{ color: "red" }}>{error}</p>}
 
-      {route && (
-        <MapView coordinates={route.geometry.coordinates} />
-      )}
+          {route && (
+            <div className="bg-white p-4 rounded-xl shadow mb-8">
+              <h2 className="text-xl font-semibold mb-4 text-gray-800">
+                Route Overview
+              </h2>
+              <MapView coordinates={route.geometry.coordinates} />
+            </div>
+          )}
 
-      {dailyLogs.map((log) => (
-        <ELDLogSheet
-          key={log.day}
-          day={log.day}
-          segments={log.segments}
-        />
-      ))}
+          <br /><br />
+
+          {dailyLogs.length > 0 && (
+            <div className="bg-white p-6 rounded-xl shadow">
+              <h2 className="text-xl font-semibold mb-6 text-gray-800">
+                Daily ELD Logs
+              </h2>
+
+              <div className="space-y-8">
+                {dailyLogs.map((log) => (
+                  <ELDLogSheet
+                    key={log.day}
+                    day={log.day}
+                    segments={log.segments}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
