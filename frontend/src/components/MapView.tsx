@@ -21,7 +21,7 @@ function MapView({ coordinates }: Props) {
         <MapContainer
             center={center}
             zoom={5}
-            style={{ height: "400px", width: "100%", marginTop: "20px" }}
+            className="h-[400px] w-full mt-5"
         >
             <TileLayer
                 attribution="© OpenStreetMap contributors"
